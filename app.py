@@ -1,6 +1,17 @@
 import streamlit as st
+from groq import Groq
+from dotenv import load_dotenv
+import os
 
-# Set page configuration
+# Set Generate page configuration
+st.set_page_config(page_title="LynQX - Generate Test Scenarios", layout="wide")
+
+# Load API KEY
+load_dotenv()
+api_key = os.getenv("GROQ_API_KEY")
+
+
+# Set Home page configuration
 st.set_page_config(page_title="LynQX", layout="wide") 
 
 # Sidebar Navigation
