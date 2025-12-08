@@ -9,6 +9,11 @@ st.set_page_config(page_title="LynQX - Generate Test Scenarios", layout="wide")
 # Load API KEY
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
+if not api_key:
+    st.error("❌ Missing Groq API Key! Please add it to your .env file as GROQ_API_KEY='your_key_here'.")
+    st.stop()
+
+client = Groq(api_key=api_key)
 
 
 # Set Home page configuration
