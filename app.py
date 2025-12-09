@@ -52,20 +52,50 @@ st.sidebar.caption("LynQX - Streamlining Your Testing Process")
 # Main Page Header
 if st.session_state["current_step"] == 1:
   html = """
-  <div style="margin-top:40px;">
-    <div style="text-align:center;">
-      <h1 style="font-size:3rem;font-weight:800;color:white;margin-bottom:0.4rem;">
-        LynQx
-      </h1>
-    </div>
-    <div style="text-align:left;margin-left:2px;">
-      <h2 style="font-size:1.8rem;font-weight:700;color:white;margin-top:0.2rem;">
-        Step&nbsp;1:&nbsp;Input&nbsp;User&nbsp;Stories
-      </h2>
-    </div>
+  <head>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+      .lynqx-title {
+        font-family: 'Dancing Script', cursive !important;
+        font-size: 14rem;
+        font-weight: 900;
+        color: white;
+        display: block;
+        text-align: center;
+        transform: scale(1.5);
+        transform-origin: center;
+        margin-top: 2rem;
+        margin-bottom: 10rem;
+        padding-bottom: 4rem;
+        letter-spacing: 5px;
+        line-height: 1.2;
+        text-shadow: 0 0 6px rgba(255, 255, 255, 0.4),
+                     0 0 15px rgba(164, 116, 255, 0.2);
+      }
+      .lynqx-subtitle {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;         
+        font-weight: 500;         
+        color: rgba(255, 255, 255, 0.85);  
+        text-align: left;
+        margin-left: 10px;
+        margin-top: 3rem;
+      }
+      .block-container {
+        max-width: 100% !important;
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+    </style>
+  </head>
+
+  <div>
+    <h1 class="lynqx-title">LynQX</h1>
+    <h2 class="lynqx-subtitle">Step&nbsp;1:&nbsp;Input&nbsp;User&nbsp;Stories</h2>
   </div>
   """
   st.markdown(html, unsafe_allow_html=True)
+
 
   # Input Section
   tab1, tab2 = st.tabs(["📝 Enter Text", "📁 Upload File"])
@@ -103,21 +133,60 @@ if st.session_state["current_step"] == 1:
 # Generate test case page Header
 elif st.session_state["current_step"] == 2:
   html = """
-  <div style="margin-top:7px;">
-    <div style="text-align:center;">
-      <h1 style="font-size:3rem;font-weight:800;color:white;margin-bottom:0.4rem;">
-        LynQx
-      </h1>
-    </div>
-    <div style="text-align:left;margin-left:2px;">
-      <h2 style="font-size:1.8rem;font-weight:700;color:white;margin-top:0.2rem;">
-        Step&nbsp;2:&nbsp;Generate&nbsp;Test&nbsp;Scenarios
-      </h2>
-    </div>
+  <head>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+      .lynqx-container-v4 {
+        position: relative;
+        width: 100%;
+        margin-bottom: 1rem;       
+      }
+
+      .lynqx-title-v4 {
+        font-family: 'Dancing Script', cursive !important;
+        font-size: 22rem;
+        font-weight: 900;
+        color: white;
+        text-align: left;
+        margin: 0;
+        padding-left: 2rem;
+        margin-top: 1rem;
+        margin-bottom: 3rem;       
+        letter-spacing: 7px;
+        line-height: 1.1;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.5),
+                     0 0 20px rgba(164, 116, 255, 0.25),
+                     0 0 40px rgba(164, 116, 255, 0.15);
+      }
+
+      .lynqx-subtitle-v4 {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.85);
+        text-align: left;
+        margin-left: 10px;
+        margin-top: 2rem;           
+        margin-bottom: 0rem;    
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding-bottom: 0.3rem;   
+        width: 98%;
+      }
+
+      .block-container {
+        max-width: 100% !important;
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+    </style>
+  </head>
+
+  <div class="lynqx-container-v4">
+    <h1 class="lynqx-title-v4">LynQX</h1>
+    <h2 class="lynqx-subtitle-v4">Step&nbsp;2:&nbsp;Generate&nbsp;Test&nbsp;Scenarios</h2>
   </div>
   """
   st.markdown(html, unsafe_allow_html=True)
-  st.markdown("<hr style='margin-top:5px; margin-bottom:10px;'>", unsafe_allow_html=True)
 
 # Load User Stories from Step 1
   user_stories_input = st.session_state["user_stories"]
