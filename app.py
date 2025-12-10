@@ -246,84 +246,127 @@ if st.session_state.get("show_step2", False) and "generated_test_cases" in st.se
 
 # Step 3 page layout]
 # ---------------------- (STEP 3) Review Test Scenarios -------------------------
+# ---------------------- (STEP 3) Review Test Scenarios -------------------------
+# ---------------------- (STEP 3) Scenario Verification -------------------------
 elif st.session_state["current_step"] == 3:
+    import streamlit as st
+
+    # ========== Header ==========
     html = """
     <head>
-      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
       <style>
-        .lynqx-container-v5 {
-          position: relative;
-          width: 100%;
-          margin-bottom: 1rem;
-        }
-
-        .lynqx-title-v5 {
-          font-family: 'Dancing Script', cursive !important;
-          font-size: 22rem;
+        .lynqx-title {
+          font-family: 'Dancing Script', cursive;
+          font-size: 5rem;
           font-weight: 900;
           color: white;
-          text-align: left;
-          margin: 0;
-          padding-left: 2rem;
-          margin-top: 1rem;
-          margin-bottom: 3rem;
-          letter-spacing: 7px;
-          line-height: 1.1;
-          text-shadow: 0 0 8px rgba(255, 255, 255, 0.5),
-                       0 0 20px rgba(164, 116, 255, 0.25),
-                       0 0 40px rgba(164, 116, 255, 0.15);
+          text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 30px rgba(164,116,255,0.3);
+          margin-bottom: 1rem;
         }
-
-        .lynqx-subtitle-v5 {
+        .subtitle {
           font-family: 'Poppins', sans-serif;
-          font-size: 1rem;
+          font-size: 1.6rem;
           font-weight: 500;
-          color: rgba(255, 255, 255, 0.85);
-          text-align: left;
-          margin-left: 10px;
-          margin-top: 2rem;
-          margin-bottom: 0rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-          padding-bottom: 0.3rem;
-          width: 98%;
+          color: white;
+          margin-bottom: 1rem;
         }
-
-        .block-container {
-          max-width: 100% !important;
-          padding-left: 2rem;
-          padding-right: 2rem;
+        hr {border: 1px solid rgba(255,255,255,0.1); margin-bottom: 2rem;}
+        .custom-expander > div:first-child {
+          border: 2px solid rgba(255, 99, 71, 0.6) !important;
+          border-radius: 10px !important;
+          background-color: rgba(255,99,71,0.05) !important;
         }
+        .approve-btn {
+          background-color: #176d47;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          padding: 6px 24px;
+          font-family: 'Poppins', sans-serif;
+          font-weight: 500;
+        }
+        .approve-btn:hover {background-color: #1b8a5e;}
+        .reject-btn {
+          background-color: #7c2525;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          padding: 6px 24px;
+          font-family: 'Poppins', sans-serif;
+          font-weight: 500;
+        }
+        .reject-btn:hover {background-color: #a43c3c;}
       </style>
     </head>
 
-    <div class="lynqx-container-v5">
-      <h1 class="lynqx-title-v5">LynQX</h1>
-      <h2 class="lynqx-subtitle-v5">Step&nbsp;3:&nbsp;Review&nbsp;Test&nbsp;Scenarios</h2>
-    </div>
+    <div class="lynqx-title">LynQX</div>
+    <div class="subtitle">Step 3: Scenario Verification</div>
+    <hr>
     """
     st.markdown(html, unsafe_allow_html=True)
 
-    st.subheader("🔍 Review Generated Scenarios")
-    st.info("Below are the AI-generated test scenarios. Review and approve or reject each one.")
+    # ========== Create Custom Scenario ==========
+    with st.expander("+ Create Custom Scenario", expanded=False):
+        st.markdown("### Add Your Own Test Scenario")
+        col1, col2 = st.columns(2)
+        with col1:
+            name = st.text_input("Scenario Name")
+        with col2:
+            scen_type = st.selectbox("Scenario Type", ["Positive", "Negative", "Edge Case"])
+        scen_id = st.text_input("Scenario ID", "TS009", disabled=True)
+        desc = st.text_area("Description", height=100)
+        related = st.text_input("Related User Story")
+        if st.button("Add Scenario"):
+            if name and desc and related:
+                line = f"{scen_id}: {name} - {desc}"
+                st.session_state["generated_test_cases"] = st.session_state.get("generated_test_cases", "") + "\n" + line
+                st.success("✅ Custom Scenario Added!")
+            else:
+                st.warning("⚠️ Fill all fields before adding a scenario.")
 
-    generated = st.session_state.get("generated_test_cases", "")
-    if not generated.strip():
-        st.warning("⚠️ No test scenarios available. Please go back to Step 2 and generate them first.")
+    st.markdown("---")
+    st.subheader("Review Test Scenarios")
+
+    # ========== Review Section ==========
+    gen = st.session_state.get("generated_test_cases", "")
+    if not gen.strip():
+        st.warning("⚠️ No scenarios found. Go back to Step 2.")
     else:
-        scenario_lines = [line.strip() for line in generated.split("\n") if line.strip()]
-        approved_scenarios = []
+        if "scenario_status" not in st.session_state:
+            st.session_state["scenario_status"] = {}
 
-        for i, scenario in enumerate(scenario_lines):
-            with st.expander(f"Scenario {i+1}", expanded=False):
-                st.text(scenario)
-                col1, col2 = st.columns(2)
+        lines = [l.strip() for l in gen.split("\n") if l.strip()]
+        for i, sc in enumerate(lines):
+            status = st.session_state["scenario_status"].get(i, "pending")
+            border_style = (
+                "border:2px solid rgba(46,204,113,0.7);" if status == "approved"
+                else "border:2px solid rgba(255,99,71,0.6);" if status == "rejected"
+                else "border:1px solid rgba(255,255,255,0.1);"
+            )
+
+            with st.container():
+                col1, col2, col3 = st.columns([0.8, 0.1, 0.1])
                 with col1:
-                    if st.button(f"✅ Approve {i+1}", key=f"approve_{i}"):
-                        approved_scenarios.append(scenario)
-                        st.success(f"Approved Scenario {i+1}")
+                    with st.expander(f"TS00{i+1}: {sc} " +
+                                     ("(Approved ✅)" if status=="approved" else "(Rejected ❌)" if status=="rejected" else "(Pending Review)"),
+                                     expanded=False):
+                        st.markdown(f"**Type:** Positive")
+                        st.markdown(f"**Description:** Enter valid username and password, and verify redirection.")
+                        st.markdown(f"**Related User Story:** US00{i+1}")
+                        st.text_area(f"Feedback for TS00{i+1}", placeholder="Enter feedback (optional)")
                 with col2:
-                    if st.button(f"❌ Reject {i+1}", key=f"reject_{i}"):
-                        st.warning(f"Rejected Scenario {i+1}")
+                    if st.button("Approve", key=f"a_{i}"):
+                        st.session_state["scenario_status"][i] = "approved"
+                        st.rerun()
+                with col3:
+                    if st.button("Reject", key=f"r_{i}"):
+                        st.session_state["scenario_status"][i] = "rejected"
+                        st.rerun()
+                st.markdown(f"<div style='{border_style} border-radius:8px; margin-bottom:10px;'></div>", unsafe_allow_html=True)
+
+        approved = [s for s in st.session_state["scenario_status"].values() if s == "approved"]
+        st.markdown(f"**Approved Scenarios:** {len(approved)}/{len(lines)}")
 
         st.markdown("---")
         col1, col2 = st.columns(2)
@@ -333,10 +376,9 @@ elif st.session_state["current_step"] == 3:
                 st.rerun()
         with col2:
             if st.button("Next ➜ Create Test Cases"):
-                if approved_scenarios:
-                    st.session_state["approved_scenarios"] = approved_scenarios
+                if approved:
+                    st.session_state["approved_scenarios"] = approved
                     st.session_state["current_step"] = 4
-                    st.success("✅ Approved scenarios saved! Moving to test case generation.")
                     st.rerun()
                 else:
-                    st.warning("⚠️ Please approve at least one scenario before continuing.")
+                    st.warning("⚠️ Approve at least one scenario to continue.")
