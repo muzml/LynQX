@@ -233,7 +233,7 @@ elif st.session_state["current_step"] == 2:
             st.rerun()
 
 # ---------------------- (Step 3) Review Test Scenarios -------------------------
-elif st.session_state["current_step"] == 3:
+if st.session_state["current_step"] == 3:
     import re
 
     # ---------- HEADER ----------
@@ -274,72 +274,35 @@ elif st.session_state["current_step"] == 3:
         st.warning("⚠️ No test scenarios found. Please go back to Step 2 and generate them first.")
         st.stop()
 
-    raw_lines = [l.strip() for l in gen.split("\n") if l.strip()]
-    scenarios = []
-    current = {}
+    # ---------- PARSE SCENARIOS ONLY ONCE ----------
+    if "scenarios" not in st.session_state or not st.session_state["scenarios"]:
+        raw_lines = [l.strip() for l in gen.split("\n") if l.strip()]
+        scenarios = []
+        current = {}
 
-    for line in raw_lines:
-        # --- Match both bold and normal TS IDs ---
-        ts_match = re.match(r"^(?:\d+\.\s*)?(?:\*\*)?(TS\d{3})(?:\*\*)?:\s*(.*)", line)
-        if ts_match:
-            if current.get("scenario_id"):
-                scenarios.append(current)
-
-            # 🔹 Clean scenario name before any dash
-            name = ts_match.group(2).strip()
-            name = name.split("—")[0].split("-")[0].strip()  # remove after em dash or normal dash
-
-            current = {
-                "scenario_id": ts_match.group(1).strip(),
-                "scenario_name": name,
-                "description": "",
-                "expected": "",
-                "related_user_story": "",
-                "scenario_type": "Positive",
-                "status": "Pending Review",
-            }
-            continue
-
-        # --- Ignore markdown headers ---
-        if re.match(r"^#+", line):
-            continue
-
-        # --- Detect key fields ---
-        if re.match(r"^[\*\-]?\s*Description\s*:", line, re.IGNORECASE):
-            current["description"] = line.split(":", 1)[1].strip()
-        elif re.match(r"^[\*\-]?\s*Related User Story\s*:", line, re.IGNORECASE):
-            current["related_user_story"] = line.split(":", 1)[1].strip()
-        elif re.match(r"^[\*\-]?\s*Expected Result\s*:", line, re.IGNORECASE):
-            current["expected"] = line.split(":", 1)[1].strip()
-        elif re.match(r"^[\*\-]?\s*Status\s*:", line, re.IGNORECASE):
-            current["status"] = line.split(":", 1)[1].strip().capitalize()
-        elif "—" in line and not current.get("expected"):
-            parts = line.split("—", 1)
-            if len(parts) > 1:
-                current["expected"] = parts[1].strip()
-
-    # --- Add last scenario safely ---
-    if current.get("scenario_id"):
-        scenarios.append(current)
-
-    scenarios = [s for s in scenarios if s.get("scenario_id")]
-
-    if not scenarios:
-        st.warning("⚠️ Could not parse any scenarios from Step 2 output. Please check the generated format.")
-        st.text_area("Raw Step 2 Output (for debugging)", gen, height=250)
-        st.stop()
-
-    # --- Deduplicate safely ---
-    unique = {}
-    for s in scenarios:
-        sid = s.get("scenario_id", f"TS{len(unique)+1:03d}")
-        unique[sid] = s
-    st.session_state["scenarios"] = list(unique.values())
+        for line in raw_lines:
+            ts_match = re.match(r"^(?:\d+\.\s*)?(?:\*\*)?(TS\d{3})(?:\*\*)?:\s*(.*)", line)
+            if ts_match:
+                if current.get("scenario_id"):
+                    scenarios.append(current)
+                name = ts_match.group(2).split("—")[0].split("-")[0].strip()
+                current = {
+                    "scenario_id": ts_match.group(1),
+                    "scenario_name": name,
+                    "description": "",
+                    "expected": "",
+                    "related_user_story": "",
+                    "scenario_type": "Positive",
+                    "status": "Pending Review"
+                }
+                continue
+        if current.get("scenario_id"):
+            scenarios.append(current)
+        st.session_state["scenarios"] = scenarios
 
     # ---------- ADD CUSTOM SCENARIO ----------
     with st.expander("➕ Create Custom Scenario", expanded=False):
         st.subheader("Add Your Own Test Scenario")
-
         name = st.text_input("Scenario Name")
         col1, col2 = st.columns(2)
         with col1:
@@ -359,12 +322,12 @@ elif st.session_state["current_step"] == 3:
                         "description": desc.strip(),
                         "expected": exp.strip(),
                         "scenario_type": stype,
-                        "status": "Pending Review",
+                        "status": "Pending Review"
                     })
                     st.success(f"✅ Scenario {sid} added successfully!")
                     st.rerun()
                 else:
-                    st.warning("⚠️ This scenario already exists — please choose another name.")
+                    st.warning("⚠️ Scenario already exists — choose another name.")
             else:
                 st.warning("⚠️ Please fill Scenario Name and Description.")
 
@@ -379,39 +342,23 @@ elif st.session_state["current_step"] == 3:
             else "rgba(255,99,71,0.3)" if status == "rejected"
             else "rgba(255,255,255,0.05)"
         )
-
-        title_color = (
-            "🟢" if status == "approved"
-            else "🔴" if status == "rejected"
-            else "⚪"
-        )
-
-        # ✅ Plain text title (no HTML)
-        expander_title = f"{title_color} {sc['scenario_id']}: {sc['scenario_name']} ({sc['status']})"
+        icon = "🟢" if status == "approved" else "🔴" if status == "rejected" else "⚪"
+        expander_title = f"{icon} {sc['scenario_id']}: {sc['scenario_name']} ({sc['status']})"
 
         col1, col2, col3 = st.columns([3, 1, 1])
         with col1:
             with st.expander(expander_title, expanded=False):
                 st.markdown(f"**Type:** {sc['scenario_type']}")
                 st.markdown(f"**Description:** {sc.get('description','N/A')}")
-                if sc.get("related_user_story"):
-                    st.markdown(f"**User Story:** {sc['related_user_story']}")
-                if sc.get("expected"):
-                    st.markdown(f"**Expected Result:** {sc['expected']}")
-                st.text_area(
-                    f"Feedback for {sc['scenario_id']}",
-                    placeholder="Enter feedback (optional)",
-                    key=f"fb_{i}"
-                )
-            st.markdown(
-                f"<div style='background-color:{color}; height:3px; margin-bottom:8px;'></div>",
-                unsafe_allow_html=True,
-            )
+                st.text_area(f"Feedback for {sc['scenario_id']}", placeholder="Enter feedback (optional)", key=f"fb_{i}")
+            st.markdown(f"<div style='background-color:{color}; height:3px; margin-bottom:8px;'></div>", unsafe_allow_html=True)
 
+        # ✅ Approve/Reject buttons now work properly
         with col2:
             if st.button("Approve", key=f"a_{i}"):
                 st.session_state["scenarios"][i]["status"] = "Approved"
                 st.rerun()
+
         with col3:
             if st.button("Reject", key=f"r_{i}"):
                 st.session_state["scenarios"][i]["status"] = "Rejected"
