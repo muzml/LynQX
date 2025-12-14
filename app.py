@@ -353,7 +353,6 @@ if st.session_state["current_step"] == 3:
                 st.text_area(f"Feedback for {sc['scenario_id']}", placeholder="Enter feedback (optional)", key=f"fb_{i}")
             st.markdown(f"<div style='background-color:{color}; height:3px; margin-bottom:8px;'></div>", unsafe_allow_html=True)
 
-        # ✅ Approve/Reject buttons now work properly
         with col2:
             if st.button("Approve", key=f"a_{i}"):
                 st.session_state["scenarios"][i]["status"] = "Approved"
@@ -379,3 +378,5 @@ if st.session_state["current_step"] == 3:
         if st.button("Next ➜ Create Test Cases") and approved:
             st.session_state["current_step"] = 4
             st.rerun()
+
+# ---------------------- (Step 4) Create Test Cases -------------------------
