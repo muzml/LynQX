@@ -278,31 +278,33 @@ if st.session_state["current_step"] == 3:
     if "scenarios" not in st.session_state or not st.session_state["scenarios"]:
         raw_lines = [l.strip() for l in gen.split("\n") if l.strip()]
         scenarios = []
-        current = {}
+        seen_names = set()
 
         for line in raw_lines:
             ts_match = re.match(r"^(?:\d+\.\s*)?(?:\*\*)?(TS\d{3})(?:\*\*)?:\s*(.*)", line)
             if ts_match:
-                if current.get("scenario_id"):
-                    scenarios.append(current)
+                sid = ts_match.group(1).strip()
                 name = ts_match.group(2).split("—")[0].split("-")[0].strip()
-                current = {
-                    "scenario_id": ts_match.group(1),
-                    "scenario_name": name,
-                    "description": "",
-                    "expected": "",
-                    "related_user_story": "",
-                    "scenario_type": "Positive",
-                    "status": "Pending Review"
-                }
-                continue
-        if current.get("scenario_id"):
-            scenarios.append(current)
+
+                # ✅ Prevent duplicates by scenario name
+                if name.lower() not in seen_names:
+                    seen_names.add(name.lower())
+                    scenarios.append({
+                        "scenario_id": sid,
+                        "scenario_name": name,
+                        "description": "",
+                        "expected": "",
+                        "related_user_story": "",
+                        "scenario_type": "Positive",
+                        "status": "Pending Review"
+                    })
+
         st.session_state["scenarios"] = scenarios
 
     # ---------- ADD CUSTOM SCENARIO ----------
     with st.expander("➕ Create Custom Scenario", expanded=False):
         st.subheader("Add Your Own Test Scenario")
+
         name = st.text_input("Scenario Name")
         col1, col2 = st.columns(2)
         with col1:
@@ -351,7 +353,10 @@ if st.session_state["current_step"] == 3:
                 st.markdown(f"**Type:** {sc['scenario_type']}")
                 st.markdown(f"**Description:** {sc.get('description','N/A')}")
                 st.text_area(f"Feedback for {sc['scenario_id']}", placeholder="Enter feedback (optional)", key=f"fb_{i}")
-            st.markdown(f"<div style='background-color:{color}; height:3px; margin-bottom:8px;'></div>", unsafe_allow_html=True)
+            st.markdown(
+                f"<div style='background-color:{color}; height:3px; margin-bottom:8px;'></div>",
+                unsafe_allow_html=True
+            )
 
         with col2:
             if st.button("Approve", key=f"a_{i}"):
@@ -379,4 +384,6 @@ if st.session_state["current_step"] == 3:
             st.session_state["current_step"] = 4
             st.rerun()
 
+
 # ---------------------- (Step 4) Create Test Cases -------------------------
+
