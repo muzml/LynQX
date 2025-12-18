@@ -383,7 +383,6 @@ if st.session_state["current_step"] == 3:
         if st.button("Next ➜ Create Test Cases") and approved:
             st.session_state["current_step"] = 4
             st.rerun()
-
-
 # ---------------------- (Step 4) Create Test Cases -------------------------
-
+    approved = [s for s in st.session_state["scenarios"] if s["status"].lower() == "approved"]
+    st.session_state["approved_scenarios"] = approved
