@@ -115,13 +115,14 @@ if st.session_state["current_step"] == 1:
 
     with st.expander("Instructions"):
         st.markdown("""
-        - Each user story should describe **a feature or requirement**.  
-        - Follow the format: `US001: <Description>`  
-        - Example:
-            - US001: Add Student Record  
-            - US002: Update Student Record  
-            - US003: Delete Student Record  
-        - Click **Next** to generate test scenarios automatically.
+        ### How to provide user stories: 
+                    
+        Option 1:Enter text directly
+        - Enter requirements in any format
+        - Click "Format My Stories" to convert
+        
+        Option 2: Upload a file
+        - Supported formats: .txt, .docx, .pdf, .csv
         """)
 
     if st.button("Next ➜ Generate Test Scenarios", type="primary"):
@@ -383,4 +384,121 @@ if st.session_state["current_step"] == 3:
         if st.button("Next ➜ Create Test Cases") and approved:
             st.session_state["current_step"] = 4
             st.rerun()
+
 # ---------------------- (Step 4) Create Test Cases -------------------------
+elif st.session_state["current_step"] == 4:
+
+    html = """
+    <div class="lynqx-title">LynQX</div>
+    <div class="subtitle">Step 4: Create Test Cases</div>
+    <hr>
+    """
+    st.markdown(html, unsafe_allow_html=True)
+
+    approved = st.session_state.get("approved_scenarios", [])
+
+    if not approved:
+        st.warning("⚠️ No approved scenarios found. Please approve scenarios in Step 3.")
+        st.stop()
+
+    st.subheader("Approved Scenarios")
+
+    test_cases = []
+
+    for i, sc in enumerate(approved, start=1):
+        with st.expander(f"{sc['scenario_id']}: {sc['scenario_name']}", expanded=False):
+            steps = st.text_area(
+                f"Test Steps for {sc['scenario_id']}",
+                placeholder="1. Open application\n2. Enter credentials\n3. Click login",
+                key=f"steps_{i}"
+            )
+            expected = st.text_area(
+                f"Expected Result for {sc['scenario_id']}",
+                placeholder="User should be logged in successfully",
+                key=f"expected_{i}"
+            )
+
+            test_cases.append({
+                "test_case_id": f"TC{i:03d}",
+                "scenario_id": sc["scenario_id"],
+                "scenario_name": sc["scenario_name"],
+                "steps": steps,
+                "expected": expected
+            })
+
+    st.session_state["test_cases"] = test_cases
+
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("⬅ Back to Review Scenarios"):
+            st.session_state["current_step"] = 3
+            st.rerun()
+
+    with col2:
+        if st.button("Next ➜ Verify Coverage"):
+            st.session_state["current_step"] = 5
+            st.rerun()
+
+
+# ---------------------- (Step 5) Verify Coverage -------------------------
+elif st.session_state["current_step"] == 5:
+
+    html = """
+    <div class="lynqx-title">LynQX</div>
+    <div class="subtitle">Step 5: Test Coverage Verification</div>
+    <hr>
+    """
+    st.markdown(html, unsafe_allow_html=True)
+
+    scenarios = st.session_state.get("scenarios", [])
+    approved = st.session_state.get("approved_scenarios", [])
+
+    total = len(scenarios)
+    covered = len(approved)
+    coverage_pct = int((covered / total) * 100) if total else 0
+
+    st.subheader("Test Coverage Report")
+    st.markdown(f"### {coverage_pct}%")
+
+    st.progress(coverage_pct / 100)
+
+    if coverage_pct >= 80:
+        st.success("Coverage is acceptable")
+    else:
+        st.warning("Coverage needs improvement")
+
+    # Covered Aspects
+    with st.expander("Covered Aspects", expanded=True):
+        for s in approved:
+            st.markdown(f"• {s['scenario_name']}")
+
+    # Coverage Gaps
+    uncovered = [s for s in scenarios if s["status"].lower() != "approved"]
+
+    with st.expander("Coverage Gaps", expanded=True):
+        selected_gaps = []
+        for s in uncovered:
+            if st.checkbox(s["scenario_name"], key=f"gap_{s['scenario_id']}"):
+                selected_gaps.append(s["scenario_name"])
+
+    # Recommendations
+    with st.expander("Recommendations", expanded=True):
+        if not uncovered:
+            st.markdown("✅ All scenarios are covered.")
+        else:
+            for s in uncovered:
+                st.markdown(
+                    f"• Create a test case for **{s['scenario_name']}** to improve coverage."
+                )
+
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("⬅ Back to Create Test Cases"):
+            st.session_state["current_step"] = 4
+            st.rerun()
+
+    with col2:
+        if st.button("Continue to Test Preparation"):
+            st.session_state["current_step"] = 6
+            st.rerun()
+
