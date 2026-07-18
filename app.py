@@ -42,14 +42,18 @@ steps = [
     "Generate Report"
 ]
 
-# Sidebar highlighting logic
+# Sidebar clickable navigation
 for i, step in enumerate(steps, start=1):
     if i < st.session_state["current_step"]:
-        st.sidebar.success(step)
+        label = f"✅ {step}"
     elif i == st.session_state["current_step"]:
-        st.sidebar.info(step)
+        label = f"▶ {step}"
     else:
-        st.sidebar.markdown(step)
+        label = step
+
+    if st.sidebar.button(label, key=f"nav_{i}", use_container_width=True):
+        st.session_state["current_step"] = i
+        st.rerun()
 
 st.sidebar.markdown("---")
 st.sidebar.caption("LynQX - Streamlining Your Testing Process")
@@ -511,3 +515,30 @@ elif st.session_state["current_step"] == 5:
             st.session_state["current_step"] = 6
             st.rerun()
 
+# ---------------------- (Steps 6-8) Coming Soon -------------------------
+elif st.session_state["current_step"] in [6, 7, 8]:
+    step_names = {
+        6: "Prepare for Execution",
+        7: "Upload Test Results",
+        8: "Generate Report"
+    }
+    step_name = step_names[st.session_state["current_step"]]
+
+    st.markdown(
+        f"""
+        <div style="text-align:center; padding: 4rem 2rem;">
+            <div style="font-size:4rem;">🚧</div>
+            <h2 style="color:white; font-family:'Poppins',sans-serif; margin-top:1rem;">
+                Step {st.session_state['current_step']}: {step_name}
+            </h2>
+            <p style="color:rgba(255,255,255,0.6); font-size:1.1rem; margin-top:0.5rem;">
+                This step is coming soon. Stay tuned!
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    if st.button("⬅ Back"):
+        st.session_state["current_step"] = st.session_state["current_step"] - 1
+        st.rerun()
