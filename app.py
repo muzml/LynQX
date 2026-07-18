@@ -348,7 +348,7 @@ if st.session_state["current_step"] == 3:
         icon = "🟢" if status == "approved" else "🔴" if status == "rejected" else "⚪"
         expander_title = f"{icon} {sc['scenario_id']}: {sc['scenario_name']} ({sc['status']})"
 
-        col1, col2, col3 = st.columns([3, 1, 1])
+        col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
         with col1:
             with st.expander(expander_title, expanded=False):
                 st.markdown(f"**Type:** {sc['scenario_type']}")
@@ -369,11 +369,18 @@ if st.session_state["current_step"] == 3:
                 st.session_state["scenarios"][i]["status"] = "Rejected"
                 st.rerun()
 
+        with col4:
+            if st.button("Delete", key=f"d_{i}"):
+                st.session_state["scenarios"].pop(i)
+                st.rerun()
+
     # ---------- FOOTER ----------
     approved = [s for s in st.session_state["scenarios"] if s["status"].lower() == "approved"]
     st.session_state["approved_scenarios"] = approved
 
-    st.markdown(f"**Approved Scenarios:** {len(approved)}/{len(st.session_state['scenarios'])}")
+    # Exclude rejected scenarios from total in footer
+    total_active = len([s for s in st.session_state["scenarios"] if s["status"].lower() != "rejected"])
+    st.markdown(f"**Approved Scenarios:** {len(approved)}/{total_active}")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -453,7 +460,9 @@ elif st.session_state["current_step"] == 5:
     scenarios = st.session_state.get("scenarios", [])
     approved = st.session_state.get("approved_scenarios", [])
 
-    total = len(scenarios)
+    # Exclude rejected scenarios from coverage math
+    active_scenarios = [s for s in scenarios if s["status"].lower() != "rejected"]
+    total = len(active_scenarios)
     covered = len(approved)
     coverage_pct = int((covered / total) * 100) if total else 0
 
@@ -472,8 +481,8 @@ elif st.session_state["current_step"] == 5:
         for s in approved:
             st.markdown(f"• {s['scenario_name']}")
 
-    # Coverage Gaps
-    uncovered = [s for s in scenarios if s["status"].lower() != "approved"]
+    # Coverage Gaps - only pending scenarios are considered gaps; rejected ones are ignored/out of scope
+    uncovered = [s for s in scenarios if s["status"].lower() == "pending review"]
 
     with st.expander("Coverage Gaps", expanded=True):
         selected_gaps = []
@@ -484,7 +493,7 @@ elif st.session_state["current_step"] == 5:
     # Recommendations
     with st.expander("Recommendations", expanded=True):
         if not uncovered:
-            st.markdown("✅ All scenarios are covered.")
+            st.markdown("✅ All active scenarios are covered.")
         else:
             for s in uncovered:
                 st.markdown(
