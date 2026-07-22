@@ -634,8 +634,28 @@ elif st.session_state["current_step"] == 7:
     st.markdown(html, unsafe_allow_html=True)
     
     st.subheader("Log Execution Run Results")
-    st.info("Log the pass/fail outcomes of the executed test cases.")
     
+    if "execution_results" not in st.session_state:
+        st.session_state["execution_results"] = {}
+        
+    tc_suite = st.session_state.get("test_cases", [])
+    
+    if not tc_suite:
+        st.warning("⚠️ No test cases found. Please define them in Step 4.")
+    else:
+        for tc in tc_suite:
+            tcid = tc["test_case_id"]
+            title = tc["scenario_name"]
+            
+            st.markdown(f"##### {tcid}: {title}")
+            outcome = st.selectbox(
+                f"Execution Outcome for {tcid}",
+                ["Not Run", "Passed", "Failed", "Blocked"],
+                key=f"run_outcome_{tcid}"
+            )
+            st.session_state["execution_results"][tcid] = outcome
+            st.markdown("---")
+            
     col1, col2 = st.columns(2)
     with col1:
         if st.button("⬅ Back to Prep"):
