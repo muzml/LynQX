@@ -281,9 +281,13 @@ elif st.session_state["current_step"] == 2:
         
         with st.spinner("Generating test scenarios..."):
             try:
+                temp = st.session_state.get("gen_temp", 0.7)
+                topp = st.session_state.get("gen_topp", 0.9)
                 response = client.chat.completions.create(
                     model="llama-3.3-70b-versatile",
                     messages=[{"role": "user", "content": prompt}],
+                    temperature=temp,
+                    top_p=topp
                 )
                 result = response.choices[0].message.content
                 st.success("✅ Test scenarios generated successfully! (Scroll down to view them)")
