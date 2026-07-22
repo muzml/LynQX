@@ -666,9 +666,35 @@ elif st.session_state["current_step"] == 7:
             st.session_state["current_step"] = 8
             st.rerun()
 
-# ---------------------- (Step 8) Coming Soon -------------------------
+# ---------------------- (Step 8) Generate Report -------------------------
 elif st.session_state["current_step"] == 8:
-    st.markdown("### Step 8: Generate Report (Coming Soon)")
-    if st.button("⬅ Back"):
-        st.session_state["current_step"] = 7
-        st.rerun()
+    html = """
+    <div class="lynqx-title">LynQX</div>
+    <div class="subtitle">Step 8: Generate Report</div>
+    <hr>
+    """
+    st.markdown(html, unsafe_allow_html=True)
+    
+    st.subheader("Test Execution Report Summary")
+    
+    results = st.session_state.get("execution_results", {})
+    if not results:
+        st.warning("⚠️ No execution results captured yet. Please complete Step 7.")
+    else:
+        total = len(results)
+        passed = sum(1 for status in results.values() if status == "Passed")
+        failed = sum(1 for status in results.values() if status == "Failed")
+        blocked = sum(1 for status in results.values() if status == "Blocked")
+        not_run = sum(1 for status in results.values() if status == "Not Run")
+        
+        st.write(f"Total Executed: {total}")
+        st.write(f"Passed: {passed}")
+        st.write(f"Failed: {failed}")
+        st.write(f"Blocked: {blocked}")
+        st.write(f"Not Run: {not_run}")
+        
+    col1, _ = st.columns(2)
+    with col1:
+        if st.button("⬅ Back to Results Upload"):
+            st.session_state["current_step"] = 7
+            st.rerun()
