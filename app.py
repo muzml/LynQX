@@ -126,6 +126,13 @@ for i, step in enumerate(steps, start=1):
         st.rerun()
 
 st.sidebar.markdown("---")
+st.sidebar.subheader("LLM Parameters Configuration")
+gen_temp = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7, step=0.1)
+gen_topp = st.sidebar.slider("Top-P", 0.0, 1.0, 0.9, step=0.1)
+st.session_state["gen_temp"] = gen_temp
+st.session_state["gen_topp"] = gen_topp
+
+st.sidebar.markdown("---")
 st.sidebar.caption("LynQX - Streamlining Your Testing Process")
 
 # ---------------------- (Step 1) Input User Story -------------------------
