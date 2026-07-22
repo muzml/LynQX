@@ -42,16 +42,86 @@ steps = [
     "Generate Report"
 ]
 
+# Generate CSS styling for sidebar buttons dynamically based on the current step
+current_step = st.session_state["current_step"]
+css_styles = []
+
+for i in range(1, len(steps) + 1):
+    if i < current_step:
+        # Completed step: dark green background, bright green text
+        css_styles.append(f"""
+        div.st-key-nav_{i} button {{
+            background-color: #133020 !important;
+            color: #3ecf8e !important;
+            border: 1px solid rgba(62, 207, 142, 0.15) !important;
+        }}
+        div.st-key-nav_{i} button:hover {{
+            background-color: #1a3e2c !important;
+            color: #3ecf8e !important;
+        }}
+        """)
+    elif i == current_step:
+        # Active step: dark blue/navy background, bright blue text
+        css_styles.append(f"""
+        div.st-key-nav_{i} button {{
+            background-color: #1b2a47 !important;
+            color: #3b82f6 !important;
+            border: 1px solid rgba(59, 130, 246, 0.15) !important;
+            font-weight: 600 !important;
+        }}
+        div.st-key-nav_{i} button:hover {{
+            background-color: #21355c !important;
+            color: #3b82f6 !important;
+        }}
+        """)
+    else:
+        # Future step: transparent background, white text, no border
+        css_styles.append(f"""
+        div.st-key-nav_{i} button {{
+            background-color: transparent !important;
+            color: #ffffff !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding-left: 0 !important;
+        }}
+        div.st-key-nav_{i} button:hover {{
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: #ffffff !important;
+        }}
+        """)
+
+# Combine and inject all styles
+st.markdown(f"""
+<style>
+    /* Import font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+    
+    /* Base button override */
+    div[data-testid="stSidebar"] button {{
+        display: flex !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        padding: 0.6rem 0.8rem !important;
+        border-radius: 8px !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 0.95rem !important;
+        transition: all 0.2s ease-in-out !important;
+        width: 100% !important;
+    }}
+    
+    div[data-testid="stSidebar"] button * {{
+        color: inherit !important;
+        font-weight: inherit !important;
+        font-family: inherit !important;
+    }}
+    
+    {" ".join(css_styles)}
+</style>
+""", unsafe_allow_html=True)
+
 # Sidebar clickable navigation
 for i, step in enumerate(steps, start=1):
-    if i < st.session_state["current_step"]:
-        label = f"✅ {step}"
-    elif i == st.session_state["current_step"]:
-        label = f"▶ {step}"
-    else:
-        label = step
-
-    if st.sidebar.button(label, key=f"nav_{i}", use_container_width=True):
+    if st.sidebar.button(step, key=f"nav_{i}", use_container_width=True):
         st.session_state["current_step"] = i
         st.rerun()
 
