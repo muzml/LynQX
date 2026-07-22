@@ -4,6 +4,20 @@ from dotenv import load_dotenv
 import os
 import re
 
+# ==============================================================================
+# LynQX Session State Schema Documentation:
+# - current_step (int): active QA wizard screen step index (1-8)
+# - user_stories (str): raw input text containing requirements specifications
+# - generated_test_cases (str): LLM parsed raw output content block
+# - scenarios (list): parsed structured list containing scenario records
+# - approved_scenarios (list): approved subset of scenario records
+# - test_cases (list): final defined executable step sequences
+# - execution_results (dict): map containing test outcomes (Passed, Failed, Blocked)
+# - gen_temp (float): LLM temperature configuration parameter value
+# - gen_topp (float): LLM top_p sampling parameter value
+# ==============================================================================
+
+
 # Set Home page configuration
 st.set_page_config(page_title="LynQX", layout="wide")
 
