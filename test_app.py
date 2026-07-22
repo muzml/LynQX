@@ -1,11 +1,11 @@
 # Automated test cases verification for LynQX helper logic
 def test_parse_scenarios():
-    # Mocking parser scenario logic
-    import re
+    from utils import parse_scenario_line
     line = "TS001: User Login - Verify login functionality"
-    ts_match = re.match(r"^(?:\d+\.\s*)?(?:\*\*)?(TS\d{3})(?:\*\*)?:\s*(.*)", line)
-    assert ts_match is not None
-    assert ts_match.group(1) == "TS001"
+    parsed = parse_scenario_line(line)
+    assert parsed is not None
+    assert parsed[0] == "TS001"
+    assert parsed[1] == "User Login"
     
 def test_coverage_calculation():
     # Verify coverage math
