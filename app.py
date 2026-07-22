@@ -600,6 +600,20 @@ elif st.session_state["current_step"] == 6:
     st.checkbox("3. Allocate specific test runs to team members")
     st.checkbox("4. Confirm logging directories are cleared and writeable")
     
+    st.markdown("---")
+    st.subheader("Download Test Cases Suite")
+    
+    import json
+    tc_suite = st.session_state.get("test_cases", [])
+    tc_json = json.dumps(tc_suite, indent=2)
+    
+    st.download_button(
+        label="📥 Export Test Suite (JSON)",
+        data=tc_json,
+        file_name="lynqx_test_suite.json",
+        mime="application/json"
+    )
+    
     col1, col2 = st.columns(2)
     with col1:
         if st.button("⬅ Back to Coverage"):
