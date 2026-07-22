@@ -787,6 +787,19 @@ elif st.session_state["current_step"] == 8:
         st.markdown("---")
         st.subheader("Download Report")
         
+        import pandas as pd
+        from datetime import datetime
+        
+        st.markdown("### Execution Log Timestamps")
+        log_data = []
+        for tcid, status in results.items():
+            log_data.append({
+                "TestCaseID": tcid,
+                "Status": status,
+                "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            })
+        st.dataframe(pd.DataFrame(log_data), use_container_width=True)
+
         report_text = f"""# LynQX QA Test Execution Report
         
 ## Execution Summary
