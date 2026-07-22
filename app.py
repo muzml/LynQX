@@ -345,10 +345,10 @@ if st.session_state["current_step"] == 3:
         seen_names = set()
 
         for line in raw_lines:
-            ts_match = re.match(r"^(?:\d+\.\s*)?(?:\*\*)?(TS\d{3})(?:\*\*)?:\s*(.*)", line)
-            if ts_match:
-                sid = ts_match.group(1).strip()
-                name = ts_match.group(2).split("—")[0].split("-")[0].strip()
+            from utils import parse_scenario_line
+            parsed = parse_scenario_line(line)
+            if parsed:
+                sid, name = parsed
 
                 # ✅ Prevent duplicates by scenario name
                 if name.lower() not in seen_names:
