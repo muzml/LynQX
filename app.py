@@ -624,14 +624,31 @@ elif st.session_state["current_step"] == 6:
             st.session_state["current_step"] = 7
             st.rerun()
 
-# ---------------------- (Steps 7-8) Coming Soon -------------------------
-elif st.session_state["current_step"] in [7, 8]:
-    step_names = {
-        7: "Upload Test Results",
-        8: "Generate Report"
-    }
-    step_name = step_names[st.session_state["current_step"]]
-    st.markdown(f"### Step {st.session_state['current_step']}: {step_name} (Coming Soon)")
+# ---------------------- (Step 7) Upload Test Results -------------------------
+elif st.session_state["current_step"] == 7:
+    html = """
+    <div class="lynqx-title">LynQX</div>
+    <div class="subtitle">Step 7: Upload Test Results</div>
+    <hr>
+    """
+    st.markdown(html, unsafe_allow_html=True)
+    
+    st.subheader("Log Execution Run Results")
+    st.info("Log the pass/fail outcomes of the executed test cases.")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("⬅ Back to Prep"):
+            st.session_state["current_step"] = 6
+            st.rerun()
+    with col2:
+        if st.button("Next ➜ Generate Report"):
+            st.session_state["current_step"] = 8
+            st.rerun()
+
+# ---------------------- (Step 8) Coming Soon -------------------------
+elif st.session_state["current_step"] == 8:
+    st.markdown("### Step 8: Generate Report (Coming Soon)")
     if st.button("⬅ Back"):
-        st.session_state["current_step"] -= 1
+        st.session_state["current_step"] = 7
         st.rerun()
