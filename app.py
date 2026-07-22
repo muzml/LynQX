@@ -588,6 +588,30 @@ elif st.session_state["current_step"] == 5:
 # ---------------------- (Step 6) Prepare for Execution -------------------------
 elif st.session_state["current_step"] == 6:
     html = """
+    <head>
+      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+      <style>
+        .lynqx-title {{
+          font-family: 'Dancing Script', cursive;
+          font-size: 5rem;
+          font-weight: 900;
+          color: white;
+          text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 30px rgba(164,116,255,0.3);
+          margin-bottom: 1rem;
+        }}
+        .subtitle {{
+          font-family: 'Poppins', sans-serif;
+          font-size: 1.6rem;
+          font-weight: 500;
+          color: white;
+          margin-bottom: 1rem;
+        }}
+        hr {{
+          border: 1px solid rgba(255,255,255,0.1);
+          margin-bottom: 2rem;
+        }}
+      </style>
+    </head>
     <div class="lynqx-title">LynQX</div>
     <div class="subtitle">Step 6: Prepare for Execution</div>
     <hr>
@@ -627,6 +651,30 @@ elif st.session_state["current_step"] == 6:
 # ---------------------- (Step 7) Upload Test Results -------------------------
 elif st.session_state["current_step"] == 7:
     html = """
+    <head>
+      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+      <style>
+        .lynqx-title {{
+          font-family: 'Dancing Script', cursive;
+          font-size: 5rem;
+          font-weight: 900;
+          color: white;
+          text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 30px rgba(164,116,255,0.3);
+          margin-bottom: 1rem;
+        }}
+        .subtitle {{
+          font-family: 'Poppins', sans-serif;
+          font-size: 1.6rem;
+          font-weight: 500;
+          color: white;
+          margin-bottom: 1rem;
+        }}
+        hr {{
+          border: 1px solid rgba(255,255,255,0.1);
+          margin-bottom: 2rem;
+        }}
+      </style>
+    </head>
     <div class="lynqx-title">LynQX</div>
     <div class="subtitle">Step 7: Upload Test Results</div>
     <hr>
@@ -669,6 +717,30 @@ elif st.session_state["current_step"] == 7:
 # ---------------------- (Step 8) Generate Report -------------------------
 elif st.session_state["current_step"] == 8:
     html = """
+    <head>
+      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+      <style>
+        .lynqx-title {{
+          font-family: 'Dancing Script', cursive;
+          font-size: 5rem;
+          font-weight: 900;
+          color: white;
+          text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 30px rgba(164,116,255,0.3);
+          margin-bottom: 1rem;
+        }}
+        .subtitle {{
+          font-family: 'Poppins', sans-serif;
+          font-size: 1.6rem;
+          font-weight: 500;
+          color: white;
+          margin-bottom: 1rem;
+        }}
+        hr {{
+          border: 1px solid rgba(255,255,255,0.1);
+          margin-bottom: 2rem;
+        }}
+      </style>
+    </head>
     <div class="lynqx-title">LynQX</div>
     <div class="subtitle">Step 8: Generate Report</div>
     <hr>
