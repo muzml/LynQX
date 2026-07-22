@@ -698,6 +698,26 @@ elif st.session_state["current_step"] == 8:
         st.markdown(f"### Pass Rate: {pass_ratio}%")
         st.progress(pass_ratio / 100.0)
         
+        st.markdown("---")
+        st.subheader("Download Report")
+        
+        report_text = f"""# LynQX QA Test Execution Report
+        
+## Execution Summary
+- **Total Runs**: {total}
+- **Passed**: {passed}
+- **Failed**: {failed}
+- **Blocked**: {blocked}
+- **Not Run**: {not_run}
+- **Pass Rate**: {pass_ratio}%
+"""
+        st.download_button(
+            label="📥 Export Report (Markdown)",
+            data=report_text,
+            file_name="lynqx_execution_report.md",
+            mime="text/markdown"
+        )
+        
     col1, _ = st.columns(2)
     with col1:
         if st.button("⬅ Back to Results Upload"):
