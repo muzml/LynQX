@@ -269,19 +269,8 @@ elif st.session_state["current_step"] == 2:
     if st.button("Generate Test Scenarios", type="primary"):
         user_stories = [line.strip() for line in user_stories_input.split("\n") if line.strip()]
 
-        prompt = f"""
-        As a Test Scenario Generator, analyze these user stories and generate comprehensive test scenarios.
-        Include positive test scenarios, negative test scenarios, and edge cases.
-        - scenario_id: A unique identifier (TS001, TS002, etc.)
-        - scenario_name: A descriptive name
-        - scenario_type: "Positive", "Negative", or "Edge case"
-        - description: Detailed description of the scenario
-        - related_user_story: The ID or brief description of the related user story
-        - status: "Pending Review"
-    User Stories:
-    {user_stories}
-    Format: TestCaseID: Description — Expected Result
-    """
+        from prompts import SCENARIO_GENERATION_PROMPT
+        prompt = SCENARIO_GENERATION_PROMPT.format(user_stories=user_stories)
         
         with st.spinner("Generating test scenarios..."):
             try:
