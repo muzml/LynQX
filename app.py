@@ -675,7 +675,7 @@ elif st.session_state["current_step"] == 8:
     """
     st.markdown(html, unsafe_allow_html=True)
     
-    st.subheader("Test Execution Report Summary")
+    st.subheader("Test Execution Metrics")
     
     results = st.session_state.get("execution_results", {})
     if not results:
@@ -687,11 +687,16 @@ elif st.session_state["current_step"] == 8:
         blocked = sum(1 for status in results.values() if status == "Blocked")
         not_run = sum(1 for status in results.values() if status == "Not Run")
         
-        st.write(f"Total Executed: {total}")
-        st.write(f"Passed: {passed}")
-        st.write(f"Failed: {failed}")
-        st.write(f"Blocked: {blocked}")
-        st.write(f"Not Run: {not_run}")
+        # Displaying status metrics
+        m1, m2, m3, m4 = st.columns(4)
+        m1.metric("Passed ✅", passed)
+        m2.metric("Failed ❌", failed)
+        m3.metric("Blocked ⚠️", blocked)
+        m4.metric("Total Runs 📋", total)
+        
+        pass_ratio = int((passed / total) * 100) if total else 0
+        st.markdown(f"### Pass Rate: {pass_ratio}%")
+        st.progress(pass_ratio / 100.0)
         
     col1, _ = st.columns(2)
     with col1:
