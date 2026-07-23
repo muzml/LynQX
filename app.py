@@ -111,22 +111,31 @@ st.markdown(f"""
     @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700;900&family=Poppins:wght@400;500;600&display=swap');
     
     /* Prevent horizontal scrolling and fit layout fixed on page */
-    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], .main, .block-container {{
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], .main {{
         overflow-x: hidden !important;
         max-width: 100vw !important;
+    }}
+
+    /* Compact block container top padding to fit content on screen */
+    .block-container {{
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+        max-width: 100% !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
     }}
 
     /* Global LynQX Title Styling */
     .lynqx-title, .lynqx-title-v4 {{
         font-family: 'Dancing Script', cursive !important;
-        font-size: 9rem !important;
+        font-size: 6rem !important;
         font-weight: 900 !important;
         color: #ffffff !important;
         text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 30px rgba(164,116,255,0.3) !important;
-        margin-top: 0.5rem !important;
-        margin-bottom: 0.5rem !important;
+        margin-top: 0 !important;
+        margin-bottom: 0.2rem !important;
         line-height: 1.1 !important;
-        letter-spacing: 3px !important;
+        letter-spacing: 2px !important;
     }}
 
     /* Base button override */
@@ -176,32 +185,33 @@ if st.session_state["current_step"] == 1:
       <style>
         .lynqx-title {
           font-family: 'Dancing Script', cursive !important;
-          font-size: 9rem !important;
+          font-size: 6rem !important;
           font-weight: 900;
           color: white;
           display: block;
           text-align: center;
-          margin-top: 0.5rem;
-          margin-bottom: 0.5rem;
-          letter-spacing: 3px;
+          margin-top: 0rem;
+          margin-bottom: 0.2rem;
+          letter-spacing: 2px;
           line-height: 1.1;
           text-shadow: 0 0 6px rgba(255, 255, 255, 0.4),
                        0 0 15px rgba(164, 116, 255, 0.2);
         }
         .lynqx-subtitle {
           font-family: 'Poppins', sans-serif;
-          font-size: 1.6rem;
+          font-size: 1.4rem;
           font-weight: 500;
           color: rgba(255, 255, 255, 0.85);
           text-align: left;
           margin-left: 0px;
-          margin-top: 1rem;
-          margin-bottom: 1.5rem;
+          margin-top: 0.3rem;
+          margin-bottom: 1rem;
           border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-          padding-bottom: 0.5rem;
+          padding-bottom: 0.3rem;
         }
         .block-container {
           max-width: 100% !important;
+          padding-top: 1rem !important;
           padding-left: 2rem;
           padding-right: 2rem;
         }
@@ -256,39 +266,39 @@ elif st.session_state["current_step"] == 2:
         .lynqx-container-v4 {
           position: relative;
           width: 100%;
-          margin-bottom: 1rem;
+          margin-bottom: 0.5rem;
         }
         .lynqx-title-v4 {
           font-family: 'Dancing Script', cursive !important;
-          font-size: 9rem !important;
+          font-size: 6rem !important;
           font-weight: 900;
           color: white;
           text-align: left;
           margin: 0;
           padding-left: 0;
-          margin-top: 0.5rem;
-          margin-bottom: 0.5rem;
-          letter-spacing: 3px;
+          margin-top: 0rem;
+          margin-bottom: 0.2rem;
+          letter-spacing: 2px;
           line-height: 1.1;
           text-shadow: 0 0 8px rgba(255, 255, 255, 0.5),
-                       0 0 20px rgba(164, 116, 255, 0.25),
-                       0 0 40px rgba(164, 116, 255, 0.15);
+                       0 0 20px rgba(164, 116, 255, 0.25);
         }
         .lynqx-subtitle-v4 {
           font-family: 'Poppins', sans-serif;
-          font-size: 1.6rem;
+          font-size: 1.4rem;
           font-weight: 500;
           color: rgba(255, 255, 255, 0.85);
           text-align: left;
           margin-left: 0px;
-          margin-top: 1rem;
-          margin-bottom: 1.5rem;
+          margin-top: 0.3rem;
+          margin-bottom: 1rem;
           border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-          padding-bottom: 0.5rem;
+          padding-bottom: 0.3rem;
           width: 100%;
         }
         .block-container {
           max-width: 100% !important;
+          padding-top: 1rem !important;
           padding-left: 2rem;
           padding-right: 2rem;
         }
@@ -351,22 +361,22 @@ if st.session_state["current_step"] == 3:
       <style>
         .lynqx-title {
           font-family: 'Dancing Script', cursive;
-          font-size: 9rem !important;
+          font-size: 6rem !important;
           font-weight: 900;
           color: white;
           text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 30px rgba(164,116,255,0.3);
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.2rem;
         }
         .subtitle {
           font-family: 'Poppins', sans-serif;
-          font-size: 1.6rem;
+          font-size: 1.4rem;
           font-weight: 500;
           color: white;
-          margin-bottom: 1rem;
+          margin-bottom: 0.5rem;
         }
         hr {
           border: 1px solid rgba(255,255,255,0.1);
-          margin-bottom: 2rem;
+          margin-bottom: 1rem;
         }
       </style>
     </head>
