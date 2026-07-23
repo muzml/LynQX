@@ -110,6 +110,12 @@ st.markdown(f"""
     /* Import font */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
     
+    /* Prevent horizontal scrolling and fit layout fixed on page */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], .main, .block-container {{
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }}
+
     /* Base button override */
     div[data-testid="stSidebar"] button {{
         display: flex !important;
@@ -157,29 +163,29 @@ if st.session_state["current_step"] == 1:
       <style>
         .lynqx-title {
           font-family: 'Dancing Script', cursive !important;
-          font-size: 14rem;
+          font-size: 5rem;
           font-weight: 900;
           color: white;
           display: block;
           text-align: center;
-          transform: scale(1.5);
-          transform-origin: center;
-          margin-top: 2rem;
-          margin-bottom: 10rem;
-          padding-bottom: 4rem;
-          letter-spacing: 5px;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+          letter-spacing: 3px;
           line-height: 1.2;
           text-shadow: 0 0 6px rgba(255, 255, 255, 0.4),
                        0 0 15px rgba(164, 116, 255, 0.2);
         }
         .lynqx-subtitle {
           font-family: 'Poppins', sans-serif;
-          font-size: 1rem;
+          font-size: 1.6rem;
           font-weight: 500;
           color: rgba(255, 255, 255, 0.85);
           text-align: left;
-          margin-left: 10px;
-          margin-top: 3rem;
+          margin-left: 0px;
+          margin-top: 1rem;
+          margin-bottom: 1.5rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+          padding-bottom: 0.5rem;
         }
         .block-container {
           max-width: 100% !important;
@@ -241,15 +247,15 @@ elif st.session_state["current_step"] == 2:
         }
         .lynqx-title-v4 {
           font-family: 'Dancing Script', cursive !important;
-          font-size: 22rem;
+          font-size: 5rem;
           font-weight: 900;
           color: white;
           text-align: left;
           margin: 0;
-          padding-left: 2rem;
+          padding-left: 0;
           margin-top: 1rem;
-          margin-bottom: 3rem;
-          letter-spacing: 7px;
+          margin-bottom: 1rem;
+          letter-spacing: 3px;
           line-height: 1.1;
           text-shadow: 0 0 8px rgba(255, 255, 255, 0.5),
                        0 0 20px rgba(164, 116, 255, 0.25),
@@ -257,16 +263,16 @@ elif st.session_state["current_step"] == 2:
         }
         .lynqx-subtitle-v4 {
           font-family: 'Poppins', sans-serif;
-          font-size: 1rem;
+          font-size: 1.6rem;
           font-weight: 500;
           color: rgba(255, 255, 255, 0.85);
           text-align: left;
-          margin-left: 10px;
-          margin-top: 2rem;
-          margin-bottom: 0rem;
+          margin-left: 0px;
+          margin-top: 1rem;
+          margin-bottom: 1.5rem;
           border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-          padding-bottom: 0.3rem;
-          width: 98%;
+          padding-bottom: 0.5rem;
+          width: 100%;
         }
         .block-container {
           max-width: 100% !important;
