@@ -108,12 +108,25 @@ for i in range(1, len(steps) + 1):
 st.markdown(f"""
 <style>
     /* Import font */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700;900&family=Poppins:wght@400;500;600&display=swap');
     
     /* Prevent horizontal scrolling and fit layout fixed on page */
     html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], .main, .block-container {{
         overflow-x: hidden !important;
         max-width: 100vw !important;
+    }}
+
+    /* Global LynQX Title Styling */
+    .lynqx-title, .lynqx-title-v4 {{
+        font-family: 'Dancing Script', cursive !important;
+        font-size: 9rem !important;
+        font-weight: 900 !important;
+        color: #ffffff !important;
+        text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 30px rgba(164,116,255,0.3) !important;
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+        line-height: 1.1 !important;
+        letter-spacing: 3px !important;
     }}
 
     /* Base button override */
@@ -159,19 +172,19 @@ st.sidebar.caption("LynQX - Streamlining Your Testing Process")
 if st.session_state["current_step"] == 1:
     html = """
     <head>
-      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700;900&display=swap" rel="stylesheet">
       <style>
         .lynqx-title {
           font-family: 'Dancing Script', cursive !important;
-          font-size: 5rem;
+          font-size: 9rem !important;
           font-weight: 900;
           color: white;
           display: block;
           text-align: center;
-          margin-top: 1rem;
-          margin-bottom: 1rem;
+          margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
           letter-spacing: 3px;
-          line-height: 1.2;
+          line-height: 1.1;
           text-shadow: 0 0 6px rgba(255, 255, 255, 0.4),
                        0 0 15px rgba(164, 116, 255, 0.2);
         }
@@ -238,7 +251,7 @@ if st.session_state["current_step"] == 1:
 elif st.session_state["current_step"] == 2:
     html = """
     <head>
-      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700;900&display=swap" rel="stylesheet">
       <style>
         .lynqx-container-v4 {
           position: relative;
@@ -247,14 +260,14 @@ elif st.session_state["current_step"] == 2:
         }
         .lynqx-title-v4 {
           font-family: 'Dancing Script', cursive !important;
-          font-size: 5rem;
+          font-size: 9rem !important;
           font-weight: 900;
           color: white;
           text-align: left;
           margin: 0;
           padding-left: 0;
-          margin-top: 1rem;
-          margin-bottom: 1rem;
+          margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
           letter-spacing: 3px;
           line-height: 1.1;
           text-shadow: 0 0 8px rgba(255, 255, 255, 0.5),
@@ -334,15 +347,15 @@ if st.session_state["current_step"] == 3:
     # ---------- HEADER ----------
     html = """
     <head>
-      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
       <style>
         .lynqx-title {
           font-family: 'Dancing Script', cursive;
-          font-size: 5rem;
+          font-size: 9rem !important;
           font-weight: 900;
           color: white;
           text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 30px rgba(164,116,255,0.3);
-          margin-bottom: 1rem;
+          margin-bottom: 0.5rem;
         }
         .subtitle {
           font-family: 'Poppins', sans-serif;
