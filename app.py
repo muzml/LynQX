@@ -312,9 +312,9 @@ elif st.session_state["current_step"] == 2:
     """
     st.markdown(html, unsafe_allow_html=True)
 
-    user_stories_input = st.session_state["user_stories"]
+    user_stories_input = st.session_state.get("user_stories", "")
     st.subheader("User Stories from Step 1")
-    st.text_area("User Stories", user_stories_input, height=200, disabled=True)
+    st.text_area("User Stories", user_stories_input, height=150, disabled=True)
 
     if st.button("Generate Test Scenarios", type="primary"):
         user_stories = [line.strip() for line in user_stories_input.split("\n") if line.strip()]
@@ -333,22 +333,32 @@ elif st.session_state["current_step"] == 2:
                     top_p=topp
                 )
                 result = response.choices[0].message.content
-                st.success("✅ Test scenarios generated successfully! (Scroll down to view them)")
-                st.markdown("---")
-                st.text_area("Generated Test Scenarios", value=result, height=300)
                 st.session_state["generated_test_cases"] = result
+                st.session_state["scenarios"] = []
+                st.rerun()
             except Exception as e:
                 st.error(f"❌ An error occurred while generating test scenarios: {e}")
 
+    has_generated = bool(st.session_state.get("generated_test_cases", "").strip())
+
+    if has_generated:
+        st.success("✅ Test scenarios generated successfully! Click 'Next ➜ Review Scenarios' below to proceed.")
+        st.text_area("Generated Test Scenarios", value=st.session_state["generated_test_cases"], height=250)
+
+    st.markdown("---")
     col1, col2 = st.columns(2)
     with col1:
         if st.button("⬅ Back to Step 1"):
             st.session_state["current_step"] = 1
             st.rerun()
     with col2:
-        if st.button("Next ➜ Review Scenarios"):
-            st.session_state["current_step"] = 3
-            st.rerun()
+        btn_type = "primary" if has_generated else "secondary"
+        if st.button("Next ➜ Review Scenarios", type=btn_type):
+            if has_generated:
+                st.session_state["current_step"] = 3
+                st.rerun()
+            else:
+                st.warning("⚠️ Please click 'Generate Test Scenarios' first before proceeding to Step 3.")
 
 # ---------------------- (Step 3) Review Test Scenarios -------------------------
 if st.session_state["current_step"] == 3:
