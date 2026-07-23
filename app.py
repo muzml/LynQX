@@ -352,13 +352,10 @@ elif st.session_state["current_step"] == 2:
             st.session_state["current_step"] = 1
             st.rerun()
     with col2:
-        btn_type = "primary" if has_generated else "secondary"
-        if st.button("Next ➜ Review Scenarios", type=btn_type):
-            if has_generated:
+        if has_generated:
+            if st.button("Next ➜ Review Scenarios", type="primary"):
                 st.session_state["current_step"] = 3
                 st.rerun()
-            else:
-                st.warning("⚠️ Please click 'Generate Test Scenarios' first before proceeding to Step 3.")
 
 # ---------------------- (Step 3) Review Test Scenarios -------------------------
 if st.session_state["current_step"] == 3:
