@@ -116,9 +116,9 @@ st.markdown(f"""
         max-width: 100vw !important;
     }}
 
-    /* Compact block container top padding to fit content on screen */
+    /* Compact block container top padding to fit content on screen without clipping */
     .block-container {{
-        padding-top: 1rem !important;
+        padding-top: 1.5rem !important;
         padding-bottom: 1rem !important;
         max-width: 100% !important;
         padding-left: 2rem !important;
@@ -128,14 +128,17 @@ st.markdown(f"""
     /* Global LynQX Title Styling */
     .lynqx-title, .lynqx-title-v4 {{
         font-family: 'Dancing Script', cursive !important;
-        font-size: 6rem !important;
+        font-size: 5.5rem !important;
         font-weight: 900 !important;
         color: #ffffff !important;
         text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 30px rgba(164,116,255,0.3) !important;
         margin-top: 0 !important;
         margin-bottom: 0.2rem !important;
-        line-height: 1.1 !important;
+        padding-top: 0.5rem !important;
+        line-height: 1.3 !important;
         letter-spacing: 2px !important;
+        display: block !important;
+        overflow: visible !important;
     }}
 
     /* Base button override */
@@ -185,15 +188,16 @@ if st.session_state["current_step"] == 1:
       <style>
         .lynqx-title {
           font-family: 'Dancing Script', cursive !important;
-          font-size: 6rem !important;
+          font-size: 5.5rem !important;
           font-weight: 900;
           color: white;
           display: block;
           text-align: center;
           margin-top: 0rem;
           margin-bottom: 0.2rem;
+          padding-top: 0.5rem;
           letter-spacing: 2px;
-          line-height: 1.1;
+          line-height: 1.3;
           text-shadow: 0 0 6px rgba(255, 255, 255, 0.4),
                        0 0 15px rgba(164, 116, 255, 0.2);
         }
@@ -211,7 +215,7 @@ if st.session_state["current_step"] == 1:
         }
         .block-container {
           max-width: 100% !important;
-          padding-top: 1rem !important;
+          padding-top: 1.5rem !important;
           padding-left: 2rem;
           padding-right: 2rem;
         }
@@ -270,7 +274,7 @@ elif st.session_state["current_step"] == 2:
         }
         .lynqx-title-v4 {
           font-family: 'Dancing Script', cursive !important;
-          font-size: 6rem !important;
+          font-size: 5.5rem !important;
           font-weight: 900;
           color: white;
           text-align: left;
@@ -278,8 +282,9 @@ elif st.session_state["current_step"] == 2:
           padding-left: 0;
           margin-top: 0rem;
           margin-bottom: 0.2rem;
+          padding-top: 0.5rem;
           letter-spacing: 2px;
-          line-height: 1.1;
+          line-height: 1.3;
           text-shadow: 0 0 8px rgba(255, 255, 255, 0.5),
                        0 0 20px rgba(164, 116, 255, 0.25);
         }
@@ -298,7 +303,7 @@ elif st.session_state["current_step"] == 2:
         }
         .block-container {
           max-width: 100% !important;
-          padding-top: 1rem !important;
+          padding-top: 1.5rem !important;
           padding-left: 2rem;
           padding-right: 2rem;
         }
@@ -367,12 +372,14 @@ if st.session_state["current_step"] == 3:
       <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
       <style>
         .lynqx-title {
-          font-family: 'Dancing Script', cursive;
-          font-size: 6rem !important;
+          font-family: 'Dancing Script', cursive !important;
+          font-size: 5.5rem !important;
           font-weight: 900;
           color: white;
           text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 30px rgba(164,116,255,0.3);
           margin-bottom: 0.2rem;
+          padding-top: 0.5rem;
+          line-height: 1.3 !important;
         }
         .subtitle {
           font-family: 'Poppins', sans-serif;
