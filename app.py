@@ -479,7 +479,7 @@ if st.session_state["current_step"] == 3:
         icon = "🟢" if status == "approved" else "🔴" if status == "rejected" else "⚪"
         expander_title = f"{icon} {sc['scenario_id']}: {sc['scenario_name']} ({sc['status']})"
 
-        col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
+        col1, col2, col3 = st.columns([4, 1, 1])
         with col1:
             with st.expander(expander_title, expanded=False):
                 st.markdown(f"**Type:** {sc['scenario_type']}")
@@ -498,11 +498,6 @@ if st.session_state["current_step"] == 3:
         with col3:
             if st.button("Reject", key=f"r_{i}"):
                 st.session_state["scenarios"][i]["status"] = "Rejected"
-                st.rerun()
-
-        with col4:
-            if st.button("Delete", key=f"d_{i}"):
-                st.session_state["scenarios"].pop(i)
                 st.rerun()
 
     # ---------- FOOTER ----------
